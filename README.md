@@ -3,8 +3,10 @@ Repository containing many of data science projects completed by me for academic
 
 ### Content
 - [Iris](#iris)
-
+- [Regression](#regression)
 
 
 ## Iris
 Go to [Iris](http://htmlpreview.github.io/?https://github.com/kumar-kunal/Data-Science/blob/master/Iris/Iris_Notebook.nb.html)
+## Regression
+Go to [Regression](http://htmlpreview.github.io/?https://github.com/kumar-kunal/Data-Science/blob/master/Regression/regression1/Linear-Regression.nb.html)
