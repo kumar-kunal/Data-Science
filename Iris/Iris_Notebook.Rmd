@@ -1,0 +1,132 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+Before we go into game of data, we need to install some library. If you have already installed , You can ignore
+
+```{r eval=FALSE}
+install.packages("ggplot2")
+install.packages("readr")
+install.packages("gridExtra")
+install.packages("grid")
+install.packages("plyr")
+```
+
+Once you have installed all above packages, Now we need to import all packages in our project
+```{r}
+library(ggplot2)
+library(readr)
+library(gridExtra)
+library(grid)
+library(plyr)
+```
+
+Now, our library are alredy loaded so not let's play with data...
+
+# Load Data
+```{r}
+iris=read.csv('/home/kunal/Documents/DS/Iris/iris/Iris.csv')
+```
+
+# Have Look to our data
+```{r}
+data(iris)
+iris[sample(nrow(iris),10),]
+```
+
+```{r}
+summary(iris)
+```
+
+# Visualization
+Best way To analyse...
+
+#### Sepal Length(Frequency Analysis)
+```{r}
+HisSl <- ggplot(data=iris,aes(x=SepalLengthCm))+
+  geom_histogram(binwidth = 0.2,color="black",aes(fill=Species))+
+  xlab("Sepal Lenght (cm)") +
+  ylab("Frequency")+
+  theme(legend.position ="none")+
+  ggtitle("Histogram of Sepal Length")+
+  geom_vline(data=iris,aes(xintercept= mean(SepalLengthCm)),linetype="dashed",color="red")+
+  geom_vline(data=iris,aes(xintercept= median(SepalLengthCm)),linetype="dashed",color="blue")
+          
+```
+```{r}
+HisSl
+```
+
+
+#### Sepal Width(Frequency Analysis)
+```{r}
+HistSw <- ggplot(data=iris,aes(x=SepalWidthCm)) +
+  geom_histogram(binwidth = 0.2,color="black",aes(fill=Species)) +
+  
+  xlab("Sepal Width (cm)") +
+  ylab("Frequency") +
+  theme(legend.position = "none") +
+  ggtitle("Histogram of Sepal Width") +
+  geom_vline(data=iris,aes(xintercept=mean(SepalWidthCm)),linetype="dashed",color="grey")
+
+```
+
+```{r}
+HistSw
+```
+
+
+#### Petal Length(Frequency Analysis)
+```{r}
+HistPl <- ggplot(data=iris,aes(x=PetalLengthCm)) +
+  geom_histogram(binwidth = 0.2,color="black",aes(fill=Species)) +
+  xlab("Petal Length (cm)") +
+  ylab("Frequency") +
+  theme(legend.position = "none") +
+  ggtitle("Histogram of Petal Length") +
+  geom_vline(data=iris,aes(xintercept=mean(PetalLengthCm)),linetype="dashed",color="grey")
+
+```
+
+```{r}
+HistPl
+```
+
+
+#### Petal Width(Frequency Analysis)
+```{r}
+HistPw <- ggplot(data=iris,aes(PetalWidthCm)) +
+  geom_histogram(binwidth = 0.2,color="black",aes(fill=Species)) +
+  xlab("Petal Width (cm)") +
+  ylab("Frequency") +
+  theme(legend.position = "none") +
+  ggtitle("Histogram of Petal Width") +
+  geom_vline(data=iris,aes(xintercept=mean(PetalWidthCm)),linetype="dashed",color="grey")
+
+```
+
+```{r}
+HistPw
+```
+
+#### Now time to have look at the picture of Data
+Just a Simple Plot of Data
+```{r}
+plot(iris)
+```
+For Histogram Fan
+```{r}
+grid.arrange(HisSl+ggtitle(""),
+             HistSw+ggtitle(""),
+             HistPl+ggtitle(""),
+             HistPw+ggtitle(""),
+             nrow=2,
+             top=textGrob("Iris Frequency Histogram Table",gp=gpar(fontsize=15)))                                                              
+```
+
+
+
+
+
+
+
