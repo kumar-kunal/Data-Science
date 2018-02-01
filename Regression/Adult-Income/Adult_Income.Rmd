@@ -113,5 +113,120 @@ colnames(adult)[14] <- "region"
 table(adult$region)
 ```
 
+### Missing Data
 
+- Now it's time to deal with missing data...
+
+```{r}
+# Load library first
+library(Amelia)
+```
+
+
+
+```{r}
+adult[adult=="?"]<-NA
+```
+
+Refactoring the columns...
+```{r}
+adult$workclass <- factor(adult$workclass)
+adult$region <- factor(adult$region)
+adult$marital.status <- factor(adult$marital.status)
+adult$occupation <- factor(adult$occupation)
+```
+
+- Creating a missing map for the data
+
+```{r}
+missmap(adult,y.at = c(1),y.labels = c(" "),col=c("yellow","black"))
+```
+
+
+- Ommiting missing vales...
+```{r}
+adult <- na.omit(adult)
+```
+
+- Now, check missing map again for conformation...
+```{r}
+missmap(adult,y.at = c(1),y.labels = c(" "),col=c("yellow","black"))
+```
+
+
+- Wow !!! Missing data is now gone....
+
+### Exploratory Data Analysis
+
+- Histogram of ages, by income...
+
+```{r}
+ggplot(adult,aes(age)) + geom_histogram(aes(fill=income),color='black',binwidth = 1)+theme_bw()
+```
+
+
+- Histogram of hours worked per week...
+
+```{r}
+ggplot(adult,aes(hours.per.week))+geom_histogram()+theme_bw()
+```
+
+
+
+- Barplot of region filled by income class...
+```{r}
+ggplot(adult,aes(region))+geom_bar(aes(fill=income),color="black")+theme_bw()+theme(axis.text.x = element_text(angle = 45,hjust=1))
+```
+
+
+
+### Model Building
+
+- Now, we'll build a model to classify people into two groups: above or below 50k in salary. It makes sense to use logistic regression here as we're
+  trying to predict binary outcome.
+  
+- Splitting data for training set
+
+```{r}
+library(caTools)
+
+# Splitting the data into 70% training and 30% test
+sample <- sample.split(adult$income,SplitRatio = 0.7)
+train <- subset(adult,sample==TRUE)
+test <- subset(adult,sample==FALSE)
+```
+
+- check data in test and train
+
+```{r}
+head(test)
+```
+
+```{r}
+head(train)
+```
+
+
+- Creating the model...
+
+```{r}
+model <- glm(income ~ .,family = binomial(logit),data=train)
+```
+
+```{r}
+summary(model)
+```
+
+- Removing unimportant features iteratively using 'step'...
+```{r}
+new.step.model <- step(model)
+```
+
+
+- Predictions and Checking results, we'll use the new step model for this...
+
+```{r}
+test$predicted.income <- predict(new.step.model,newdata=test,type="response")
+table(test$income,test$predicted.income>0.5)
+```
 
