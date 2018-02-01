@@ -4,7 +4,7 @@ Repository containing many of data science projects completed by me for academic
 ### Content
 - [Iris](#iris)
 - [Regression](#regression)
-- [Adult-Income](income-prediction)
+- [Adult-Income](http://htmlpreview.github.io/?https://github.com/kumar-kunal/Data-Science/blob/master/Regression/Adult-Income/Adult_Income.nb.html)
 
 
 ## Iris
