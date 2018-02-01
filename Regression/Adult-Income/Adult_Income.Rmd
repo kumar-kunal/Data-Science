@@ -1,0 +1,232 @@
+---
+title: "Income analysis using Logistic Regression"
+output: html_notebook
+---
+
+#### Setup
+first load some library...
+
+```{r}
+library(ggplot2)
+library(stats)
+library(dplyr)
+```
+
+- It's time to read data...
+```{r}
+adult <- read.csv("adult.csv")
+head(adult)
+```
+
+
+- Let's checkout the structure of the variables and their summary..
+```{r}
+str(adult)
+```
+
+
+```{r}
+summary(adult)
+```
+
+
+
+### Data Cleaning
+
+We have a lot of categorical variables, with too many factors that may be neccessary for model building. In this section, we'll collapse factors for
+these columns into fewer categories.
+
+#### Type Employer
+Let's check out the frequency of the different factor levels in this column.
+
+```{r}
+table(adult$workclass)
+```
+
+We'll combine similar looking factor levels into single levels.
+```{r}
+levels(adult$workclass)[4] <- "Unemployed"
+levels(adult$workclass)[9] <- "Unemployed"
+levels(adult$workclass)[3] <- "SL-gov"
+levels(adult$workclass)[8] <- "SL-gov"
+levels(adult$workclass)[6:7] <- "self-emp"
+```
+
+Okay, Now re-check it...
+```{r}
+table(adult$workclass)
+```
+
+
+#### Marital Status
+- We'll do the same for this column.
+```{r}
+levels(adult$marital.status)[1] <- "Not-Married"
+levels(adult$marital.status)[6:7] <- "Not-Married"
+levels(adult$marital.status)[2:4] <- "Married"
+
+table(adult$marital.status)
+```
+
+
+#### Countries into region
+Again, We have too many countries to deal with. It makes sense to convert them into regions. Let's build vectors for regions.
+
+```{r}
+Asia <-c('China','Hong','India','Iran','Cambodia','Japan', 'Laos' ,
+          'Philippines' ,'Vietnam' ,'Taiwan', 'Thailand')
+North.America <- c('Canada','United-States','Puerto-Rico' )
+
+Europe <- c('England' ,'France', 'Germany' ,'Greece','Holand-Netherlands','Hungary',
+            'Ireland','Italy','Poland','Portugal','Scotland','Yugoslavia')
+
+Latin.and.South.America <- c('Columbia','Cuba','Dominican-Republic','Ecuador',
+                             'El-Salvador','Guatemala','Haiti','Honduras',
+                             'Mexico','Nicaragua','Outlying-US(Guam-USVI-etc)','Peru',
+                            'Jamaica','Trinadad&Tobago')
+Other <- c('South')
+```
+
+- Function to set county according to their continent...
+```{r}
+group_country <- function(ctry){
+  if(ctry %in% Asia){
+      return ('Asia')
+  }else if(ctry %in% North.America){
+    return('North.America')
+  }else if(ctry %in% Europe){
+    return('Europe')
+  }else if(ctry %in% Latin.and.South.America){
+    return('Latin.and.South.America')
+  }else {
+    return ('Other')
+  }
+}
+```
+
+- Now time to apply our above function...
+```{r}
+adult$native.country <- sapply(adult$native.country,group_country)
+```
+```{r}
+colnames(adult)[14] <- "region"
+table(adult$region)
+```
+
+### Missing Data
+
+- Now it's time to deal with missing data...
+
+```{r}
+# Load library first
+library(Amelia)
+```
+
+
+
+```{r}
+adult[adult=="?"]<-NA
+```
+
+Refactoring the columns...
+```{r}
+adult$workclass <- factor(adult$workclass)
+adult$region <- factor(adult$region)
+adult$marital.status <- factor(adult$marital.status)
+adult$occupation <- factor(adult$occupation)
+```
+
+- Creating a missing map for the data
+
+```{r}
+missmap(adult,y.at = c(1),y.labels = c(" "),col=c("yellow","black"))
+```
+
+
+- Ommiting missing vales...
+```{r}
+adult <- na.omit(adult)
+```
+
+- Now, check missing map again for conformation...
+```{r}
+missmap(adult,y.at = c(1),y.labels = c(" "),col=c("yellow","black"))
+```
+
+
+- Wow !!! Missing data is now gone....
+
+### Exploratory Data Analysis
+
+- Histogram of ages, by income...
+
+```{r}
+ggplot(adult,aes(age)) + geom_histogram(aes(fill=income),color='black',binwidth = 1)+theme_bw()
+```
+
+
+- Histogram of hours worked per week...
+
+```{r}
+ggplot(adult,aes(hours.per.week))+geom_histogram()+theme_bw()
+```
+
+
+
+- Barplot of region filled by income class...
+```{r}
+ggplot(adult,aes(region))+geom_bar(aes(fill=income),color="black")+theme_bw()+theme(axis.text.x = element_text(angle = 45,hjust=1))
+```
+
+
+
+### Model Building
+
+- Now, we'll build a model to classify people into two groups: above or below 50k in salary. It makes sense to use logistic regression here as we're
+  trying to predict binary outcome.
+  
+- Splitting data for training set
+
+```{r}
+library(caTools)
+
+# Splitting the data into 70% training and 30% test
+sample <- sample.split(adult$income,SplitRatio = 0.7)
+train <- subset(adult,sample==TRUE)
+test <- subset(adult,sample==FALSE)
+```
+
+- check data in test and train
+
+```{r}
+head(test)
+```
+
+```{r}
+head(train)
+```
+
+
+- Creating the model...
+
+```{r}
+model <- glm(income ~ .,family = binomial(logit),data=train)
+```
+
+```{r}
+summary(model)
+```
+
+- Removing unimportant features iteratively using 'step'...
+```{r}
+new.step.model <- step(model)
+```
+
+
+- Predictions and Checking results, we'll use the new step model for this...
+
+```{r}
+test$predicted.income <- predict(new.step.model,newdata=test,type="response")
+table(test$income,test$predicted.income>0.5)
+```
+
