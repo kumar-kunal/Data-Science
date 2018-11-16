@@ -1,11 +1,6 @@
 # Data-Science
 This repo contains solution for different problems from kaggle. I have used Python and R as programming language.
-### Content
-- [Iris](#iris)
-- [Regression](#regression)
-- [AdultIncome](http://htmlpreview.github.io/?https://github.com/kumar-kunal/Data-Science/blob/master/Regression/Adult-  Income/Adult_Income.nb.html)
-- [TitanicDataSet] (#Titanic-data-set)
-- [HousePricePrediction] (#House-Price-Prediction)
+
 
 
 
