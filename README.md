@@ -1,10 +1,12 @@
 # Data-Science
-Repository containing many of data science projects completed by me for academic, self learning, and hobby purposes. Presented in the form of R markdown file.
-
+This repo contains solution for different problems from kaggle. I have used Python and R as programming language.
 ### Content
 - [Iris](#iris)
 - [Regression](#regression)
-- [Adult-Income](http://htmlpreview.github.io/?https://github.com/kumar-kunal/Data-Science/blob/master/Regression/Adult-Income/Adult_Income.nb.html)
+- [Adult-Income](http://htmlpreview.github.io/?https://github.com/kumar-kunal/Data-Science/blob/master/Regression/Adult-  Income/Adult_Income.nb.html)
+- [Titanic-data-set] (# Titanic-data-set)
+- [House-Price-Prediction] (# House-Price-Prediction)
+
 
 
 ## Iris
@@ -13,3 +15,6 @@ Go to [Iris](http://htmlpreview.github.io/?https://github.com/kumar-kunal/Data-S
 Go to [Regression](http://htmlpreview.github.io/?https://github.com/kumar-kunal/Data-Science/blob/master/Regression/regression1/Linear-Regression.nb.html)
 ## [Income Prediction](http://htmlpreview.github.io/?https://github.com/kumar-kunal/Data-Science/blob/master/Regression/Adult-Income/Adult_Income.nb.html)
 Attempting to predict the salary of person using Logistic Regression.
+
+## Titanic-data-set
+## House-Price-Prediction
