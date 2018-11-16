@@ -13,3 +13,4 @@ Attempting to predict the salary of person using Logistic Regression.
 
 ## Titanic-data-set
 ## House-Price-Prediction
+## Tweeter-Sentiment-Analysis
