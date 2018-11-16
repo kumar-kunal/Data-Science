@@ -3,9 +3,9 @@ This repo contains solution for different problems from kaggle. I have used Pyth
 ### Content
 - [Iris](#iris)
 - [Regression](#regression)
-- [Adult-Income](http://htmlpreview.github.io/?https://github.com/kumar-kunal/Data-Science/blob/master/Regression/Adult-  Income/Adult_Income.nb.html)
-- [Titanic-data-set] (# Titanic-data-set)
-- [House-Price-Prediction] (# House-Price-Prediction)
+- [AdultIncome](http://htmlpreview.github.io/?https://github.com/kumar-kunal/Data-Science/blob/master/Regression/Adult-  Income/Adult_Income.nb.html)
+- [TitanicDataSet] (#Titanic-data-set)
+- [HousePricePrediction] (#House-Price-Prediction)
 
 
 
